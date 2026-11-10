@@ -10,7 +10,7 @@
   <title>PulseTrade — Live Market Analysis</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=3">
 </head>
 <body>
 <header class="topbar">
@@ -80,6 +80,34 @@
     </article>
   </section>
 
+  <section class="panel agent-panel" id="autonomousAgent">
+    <div class="panel-heading">
+      <div><h2>Autonomous Market Agent</h2><p>Automatic market selection and simulated execution only — no Binomo connection or orders</p></div>
+      <span id="agentBadge" class="badge badge-warning">PAPER MODE · OFF</span>
+    </div>
+    <div class="agent-toolbar">
+      <div class="agent-metrics">
+        <div><span>PAPER BALANCE</span><b id="paperBalance">$10,000.00</b></div>
+        <div><span>SESSION P/L</span><b id="paperPnl">$0.00</b></div>
+        <div><span>WINS / LOSSES</span><b id="paperRecord">0 / 0</b></div>
+        <div><span>OPEN POSITION</span><b id="paperOpen">None</b></div>
+      </div>
+      <button id="agentToggle" class="btn btn-primary">Start paper agent</button>
+    </div>
+    <div class="agent-config">
+      <label>Starting simulated balance<input id="startingBalance" type="number" min="100" step="100" value="10000"></label>
+      <label>Risk per trade (%)<input id="riskPct" type="number" min="0.1" max="1" step="0.1" value="1"></label>
+      <label>Maximum trades / session<input id="dailyTradeCap" type="number" min="1" max="100" value="20"></label>
+      <label>Maximum simulated daily loss (%)<input id="dailyLossPct" type="number" min="1" max="20" value="5"></label>
+    </div>
+    <p id="agentStatus" class="muted-note">Connect the Crypto feed. The scanner will warm up across six markets before it can evaluate opportunities.</p>
+    <h3 class="section-label">MARKET SCANNER RANKING</h3>
+    <div class="table-wrap"><table><thead><tr><th>ASSET</th><th>PRICE</th><th>BIAS</th><th>SIGNAL</th><th>EXPIRY</th><th>RANK</th></tr></thead><tbody id="scannerBody"><tr><td colspan="6" class="empty">Warming up indicators…</td></tr></tbody></table></div>
+    <h3 class="section-label">PAPER TRADE JOURNAL</h3>
+    <div class="table-wrap"><table><thead><tr><th>TIME</th><th>ASSET</th><th>DIRECTION</th><th>STAKE</th><th>EXPIRY</th><th>RESULT</th><th>P/L</th></tr></thead><tbody id="paperBody"><tr><td colspan="7" class="empty">No simulated trades yet.</td></tr></tbody></table></div>
+    <p class="muted-note">Paper results are hypothetical and use external Binance spot prices with an assumed 80% payout. They are not Binomo quotes, verified historical performance, or a promise of future results. This agent does not access your Binomo account.</p>
+  </section>
+
   <section class="panel history-panel">
     <div class="panel-heading"><div><h2>Signal history</h2><p>Signals generated only while the live feed is valid</p></div><button id="clearHistory" class="text-btn">Clear history</button></div>
     <div class="table-wrap"><table><thead><tr><th>TIME</th><th>MARKET</th><th>SIGNAL</th><th>SCORE</th><th>PRICE</th><th>REASON</th></tr></thead><tbody id="historyBody"><tr><td colspan="6" class="empty">No signals yet.</td></tr></tbody></table></div>
@@ -96,5 +124,5 @@
   <footer>PulseTrade is an educational market-analysis tool. Binary options are high risk; you can lose your entire stake. No signal is financial advice.</footer>
 </main>
 <div id="toast" class="toast" role="status"></div>
-<script src="./app.js"></script>
+<script src="./app.js?v=3"></script>
 </body></html>
