@@ -1,6 +1,6 @@
 # PulseTrade — Live Binary Trading Analysis PWA
 
-A responsive, installable browser dashboard for live market monitoring and rule-based 1-minute technical analysis. It does **not** place trades or connect to a Binomo account.
+A responsive, installable browser dashboard for live market monitoring, multi-asset crypto scanning, and autonomous paper-trading experiments. It does **not** place trades or connect to a Binomo account.
 
 ## Run locally
 Because service workers require localhost or HTTPS, run a local static server:
@@ -31,3 +31,18 @@ Choose Forex, provide an API key from a provider whose account plan explicitly s
 2. Upload the files in this folder to the repository root.
 3. In repository Settings → Pages, choose deploy from branch and select `main` / root.
 4. Open the HTTPS Pages URL on your phone or laptop. Use the browser's “Add to Home Screen” / “Install app” option.
+
+
+## Autonomous paper agent (v2)
+- Scans BTC, ETH, BNB, SOL, XRP and DOGE spot markets from Binance public market data.
+- Loads up to 100 recent 1-minute candles per pair, then follows public trade streams.
+- Ranks eligible rule-based CALL/PUT setups and selects the highest-ranked available opportunity.
+- Opens at most one simulated position at a time. Stake is capped at 1% of simulated balance and $100; the daily trade cap and 5% default simulated drawdown stop are configurable.
+- Selects a 1/2/5-minute simulated expiry using recent Bollinger width as a simple volatility heuristic.
+- Uses an illustrative 80% payout assumption for paper results; this is not a quote from Binomo and actual payout terms vary.
+- Paper trades settle against Binance spot prices. These are not Binomo or OTC prices; results are not evidence of expected profitability.
+- The agent starts OFF and must be manually enabled. Stopping it prevents new simulated entries; an open paper trade is still allowed to settle.
+- Forex remains a selected-pair analysis feed; multi-asset Forex scanning is not enabled in this version because provider entitlements, rate limits, and real-time access differ.
+
+## Important platform restriction
+Binomo's rules prohibit use of bots, AI, or specialized software to place trades. This project therefore has no Binomo login, browser automation, order submission, or account connection. Do not add those capabilities.
