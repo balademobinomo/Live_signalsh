@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="Live Forex and Crypto market analysis dashboard with transparent CALL, PUT and NO TRADE signals.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <title>PulseTrade — Live Market Analysis</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">P</span><div><b>PulseTrade</b><small>LIVE MARKET INTELLIGENCE</small></div></div>
+  <div class="top-status"><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting…</span><span class="divider-v"></span><span id="clock">--:--:--</span></div>
+  <button id="soundToggle" class="icon-btn" aria-label="Toggle sound alerts" title="Sound alerts">🔔 <span id="soundLabel">Sound off</span></button>
+</header>
+<main>
+  <section class="hero-row">
+    <div><p class="eyebrow">MARKET OVERVIEW / 1-MINUTE STRATEGY</p><h1>Live trading analysis</h1><p class="subhead">Real-time market data · transparent signals · manual execution only</p></div>
+    <div class="live-pill"><span class="pulse"></span> MARKET MONITOR</div>
+  </section>
+
+  <section class="controls panel">
+    <div class="field"><label for="marketType">MARKET</label><select id="marketType"><option value="crypto">Crypto · Live public feed</option><option value="forex">Forex · API key required</option></select></div>
+    <div class="field"><label for="symbol">INSTRUMENT</label><select id="symbol"></select></div>
+    <div class="field"><label>TIMEFRAME</label><div class="static-select">1 minute</div></div>
+    <div class="field"><label for="threshold">SIGNAL THRESHOLD</label><select id="threshold"><option value="4">Balanced</option><option value="5">Strict</option><option value="3">More sensitive</option></select></div>
+    <button id="reconnectBtn" class="btn btn-secondary">↻ Reconnect</button>
+  </section>
+
+  <section class="stats-grid">
+    <article class="stat panel"><span>LAST PRICE</span><strong id="lastPrice">—</strong><small id="priceChange">Waiting for feed</small></article>
+    <article class="stat panel"><span>1M TREND</span><strong id="trendValue">—</strong><small id="trendDetail">Needs live candles</small></article>
+    <article class="stat panel"><span>RSI (14)</span><strong id="rsiValue">—</strong><small id="rsiDetail">Neutral range 40–60</small></article>
+    <article class="stat panel"><span>DATA AGE</span><strong id="dataAge">—</strong><small id="dataSource">No data source</small></article>
+  </section>
+
+  <section class="main-grid">
+    <article class="panel chart-panel">
+      <div class="panel-heading"><div><h2 id="chartTitle">BTC / USDT</h2><p>1-minute candles · live updates</p></div><span id="feedBadge" class="badge badge-muted">DISCONNECTED</span></div>
+      <div id="chart" class="chart"></div>
+      <div class="chart-legend"><span><i class="legend-dot ema9"></i> EMA 9</span><span><i class="legend-dot ema21"></i> EMA 21</span><span><i class="legend-dot ema50"></i> EMA 50</span></div>
+    </article>
+    <aside class="panel signal-panel">
+      <div class="panel-heading"><div><h2>AI signal engine</h2><p>Rule-based technical confluence</p></div><span class="spark">✦</span></div>
+      <div id="signalCard" class="signal-card neutral">
+        <span class="signal-kicker">CURRENT SIGNAL</span><strong id="signalText">NO TRADE</strong><span id="signalScore">Waiting for valid live data</span>
+      </div>
+      <div class="signal-meta"><div><span>Setup score</span><b id="scoreValue">—</b></div><div><span>Signal time</span><b id="signalTime">—</b></div></div>
+      <h3 class="section-label">WHY THIS SIGNAL?</h3>
+      <ul id="signalReasons" class="reasons"><li>Connect a supported live feed to begin.</li></ul>
+      <div class="disclaimer-mini">Signals are technical observations, not predictions or guaranteed outcomes. Confirm price on Binomo before any manual decision.</div>
+    </aside>
+  </section>
+
+  <section class="lower-grid">
+    <article class="panel">
+      <div class="panel-heading"><div><h2>Indicator monitor</h2><p>Calculated from the selected live feed</p></div></div>
+      <div class="indicator-grid">
+        <div class="indicator"><span>EMA 9</span><b id="ema9">—</b><small id="ema9State">—</small></div>
+        <div class="indicator"><span>EMA 21</span><b id="ema21">—</b><small id="ema21State">—</small></div>
+        <div class="indicator"><span>EMA 50</span><b id="ema50">—</b><small id="ema50State">—</small></div>
+        <div class="indicator"><span>MACD</span><b id="macd">—</b><small id="macdState">—</small></div>
+        <div class="indicator"><span>BOLLINGER</span><b id="bb">—</b><small id="bbState">—</small></div>
+        <div class="indicator"><span>VOLATILITY</span><b id="volatility">—</b><small id="volatilityState">—</small></div>
+      </div>
+    </article>
+    <article class="panel risk-panel">
+      <div class="panel-heading"><div><h2>Risk guardrails</h2><p>Limits for your own manual trading</p></div></div>
+      <div class="risk-fields">
+        <label>Max signals / session<input id="maxSignals" type="number" min="1" max="100" value="8"></label>
+        <label>Cooldown (minutes)<input id="cooldown" type="number" min="1" max="120" value="3"></label>
+        <label>Daily loss limit (account currency)<input id="lossLimit" type="number" min="0" step="1" value="0"></label>
+      </div>
+      <p class="muted-note">These are reminders, not broker-enforced controls. This app does not place trades, set stakes, or access your Binomo account.</p>
+    </article>
+  </section>
+
+  <section class="panel history-panel">
+    <div class="panel-heading"><div><h2>Signal history</h2><p>Signals generated only while the live feed is valid</p></div><button id="clearHistory" class="text-btn">Clear history</button></div>
+    <div class="table-wrap"><table><thead><tr><th>TIME</th><th>MARKET</th><th>SIGNAL</th><th>SCORE</th><th>PRICE</th><th>REASON</th></tr></thead><tbody id="historyBody"><tr><td colspan="6" class="empty">No signals yet.</td></tr></tbody></table></div>
+  </section>
+
+  <section class="panel setup-panel">
+    <div class="panel-heading"><div><h2>Live data connection</h2><p>Choose an authorized source; keys are kept in this browser only</p></div><span class="badge badge-warning">Provider setup</span></div>
+    <div class="setup-grid">
+      <div><h3>Crypto</h3><p>Uses Binance public market WebSocket for spot crypto trades and builds 1-minute candles locally. No API key required. Prices are not Binomo quotes.</p><span class="source-tag">PUBLIC WEBSOCKET · NO KEY</span></div>
+      <div><h3>Forex</h3><p>Requires a market-data provider that grants real-time Forex WebSocket access. Enter your provider's API key and confirm its plan supports live FX streaming. Availability and limits vary.</p><label class="api-label" for="fxKey">Provider API key</label><input id="fxKey" type="password" autocomplete="off" placeholder="Paste your provider key"><button id="saveFxKey" class="btn btn-secondary">Save key in this browser</button><small class="warning-text">A browser-stored key is visible to this device's browser environment. Use a provider key with restricted permissions; do not use a secret with account/trading permissions.</small></div>
+    </div>
+    <div class="notice"><b>Binomo / OTC limitation:</b> This dashboard does not connect to Binomo or read its private quotes. External Forex/Crypto prices can differ from Binomo prices. OTC symbols are unavailable unless you have a verified, authorized OTC feed. If the feed is disconnected or stale, the signal engine forces <b>NO TRADE</b>.</div>
+  </section>
+  <footer>PulseTrade is an educational market-analysis tool. Binary options are high risk; you can lose your entire stake. No signal is financial advice.</footer>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script src="./app.js"></script>
+</body></html>
